@@ -364,7 +364,7 @@
   // Reveal on scroll.
   // Headless capture + crawlers: skip the scroll-reveal choreography so
   // full-page screenshots and archival renders see every section.
-  if (navigator.webdriver) document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in'));
+  if (navigator.webdriver) { document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in')); document.querySelectorAll('img[loading="lazy"]').forEach(img => img.loading = 'eager'); }
 
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
