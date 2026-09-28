@@ -1,137 +1,85 @@
-import json
-import re
-from typing import Dict, Any
-from groq import AsyncGroq
-from config import get_settings
-from models import Article, SummaryResponse, KeyTerm
+"""Retrieve NewsAPI articles, with a credential-free demo for local use."""
+
+import httpx
+
+from backend.config import get_settings
+from backend.models import Article
 
 settings = get_settings()
 
-SYSTEM_PROMPT = """
-You are FinNews AI, a financial news simplification assistant.
-
-Your job is to explain the supplied news article clearly and accurately.
-
-Rules:
-- Use only information present in the article.
-- Never invent facts, statistics, quotes or causes.
-- Preserve important numbers and names exactly when they are provided.
-- Explain financial terminology in simple language.
-- Do not give personalized investment advice.
-- Do not tell the reader to buy, sell or hold any asset.
-- Do not predict a stock price or market outcome.
-- If the article does not provide enough information, say so.
-- Keep the response concise.
-- Return ONLY valid JSON.
-
-Required JSON:
-{
-  "summary": "2-4 sentence summary",
-  "what_happened": "plain-language explanation",
-  "why_it_matters": "why the event may matter according to the article",
-  "key_terms": [
-    {"term": "term", "meaning": "simple meaning"}
-  ],
-  "key_takeaways": ["takeaway 1", "takeaway 2", "takeaway 3"],
-  "beginner_explanation": "very simple explanation for a student or beginner"
-}
-""".strip()
-
-
-def _demo_summary(article: Article) -> SummaryResponse:
-    """Used when GROQ_API_KEY is missing or AI is unavailable."""
-    text = article.description or article.content or ""
-    return SummaryResponse(
-        summary=text[:360] if text else "No summary available.",
-        what_happened="This demo article discusses a financial or economic development and the factors readers should watch.",
-        why_it_matters="Financial news can affect business expectations, borrowing costs, consumer activity and market sentiment.",
-        key_terms=[
-            KeyTerm(term="Inflation", meaning="A general increase in prices over time."),
-            KeyTerm(term="Interest rate", meaning="The cost of borrowing money or the return earned on lending."),
-            KeyTerm(term="Market sentiment", meaning="The overall attitude investors have toward a market or asset."),
-        ],
-        key_takeaways=[
-            "Check the original article for exact figures and context.",
-            "Market reactions can change as new information becomes available.",
-            "This summary is educational and is not investment advice.",
-        ],
-        beginner_explanation=(
-            "In simple terms, the article describes an economic or business event "
-            "and explains why people who follow financial markets may pay attention to it."
+DEMO_ARTICLES = [
+    Article(
+        title="Demo: Understanding interest rates",
+        description=(
+            "This fictional example explores how a change in borrowing costs "
+            "can affect household budgets and business investment."
         ),
-    )
+        source={"name": "FinNews demo"},
+    ),
+    Article(
+        title="Demo: Reading a company's earnings report",
+        description=(
+            "In this fictional example, a company reports higher revenue but "
+            "lower profit because its operating costs increased."
+        ),
+        source={"name": "FinNews demo"},
+    ),
+    Article(
+        title="Demo: What inflation means for a budget",
+        description=(
+            "This fictional example shows how rising prices reduce the amount "
+            "of goods and services a household can buy with the same income."
+        ),
+        source={"name": "FinNews demo"},
+    ),
+]
 
 
-def _extract_json(text: str) -> Dict[str, Any]:
-    """Robustly extract JSON from an LLM response (handles ```json fences)."""
-    cleaned = (text or "").strip()
-
-    # Strip markdown code fences
-    cleaned = re.sub(r"^```json\s*", "", cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r"^```\s*", "", cleaned)
-    cleaned = re.sub(r"```$", "", cleaned).strip()
-
-    try:
-        return json.loads(cleaned)
-    except json.JSONDecodeError:
-        # Try to salvage the first {...} block
-        match = re.search(r"\{.*\}", cleaned, re.DOTALL)
-        if match:
-            try:
-                return json.loads(match.group(0))
-            except json.JSONDecodeError:
-                pass
-
-    # Last resort — return a plain-text summary
-    return {"summary": cleaned}
-
-
-async def summarize_article(article: Article) -> SummaryResponse:
-    """Call Groq to simplify an article. Falls back to demo summary if no key."""
-    if not settings.GROQ_API_KEY:
-        return _demo_summary(article)
-
-    article_text = "\n\n".join(
-        [x for x in [article.title, article.description, article.content] if x]
-    )[:6500]
-
-    client = AsyncGroq(api_key=settings.GROQ_API_KEY)
+async def fetch_news(query: str, page_size: int) -> tuple[list[Article], str]:
+    if not settings.NEWS_API_KEY:
+        return DEMO_ARTICLES[:page_size], "demo"
 
     try:
-        completion = await client.chat.completions.create(
-            model=settings.GROQ_MODEL,
-            temperature=0.2,
-            max_tokens=900,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": article_text},
-            ],
-        )
-    except Exception as e:
-        raise RuntimeError(f"Groq API error: {e}") from e
-
-    content = completion.choices[0].message.content if completion.choices else ""
-    data = _extract_json(content)
-
-    # Normalize key_terms
-    key_terms = []
-    for item in (data.get("key_terms") or []):
-        if isinstance(item, dict) and item.get("term"):
-            key_terms.append(
-                KeyTerm(
-                    term=str(item.get("term", "")),
-                    meaning=str(item.get("meaning", "")),
-                )
+        async with httpx.AsyncClient(timeout=20.0) as client:
+            response = await client.get(
+                settings.NEWS_API_URL,
+                params={
+                    "q": query,
+                    "pageSize": page_size,
+                    "language": "en",
+                    "sortBy": "publishedAt",
+                },
+                headers={"X-Api-Key": settings.NEWS_API_KEY},
             )
+            response.raise_for_status()
+            payload = response.json()
+    except httpx.HTTPStatusError as exc:
+        raise RuntimeError(
+            f"NewsAPI returned HTTP {exc.response.status_code}. "
+            "Check the server API key and provider quota."
+        ) from exc
+    except httpx.RequestError as exc:
+        raise RuntimeError("NewsAPI could not be reached. Please try again later.") from exc
+    except ValueError as exc:
+        raise RuntimeError("NewsAPI returned an invalid response.") from exc
 
-    # Normalize key_takeaways
-    takeaways = [str(x) for x in (data.get("key_takeaways") or []) if x]
+    if not isinstance(payload, dict) or payload.get("status") != "ok":
+        raise RuntimeError("NewsAPI could not complete the request.")
+    items = payload.get("articles")
+    if not isinstance(items, list):
+        raise RuntimeError("NewsAPI returned an invalid article list.")
 
-    return SummaryResponse(
-        summary=data.get("summary") or "No summary available.",
-        what_happened=data.get("what_happened") or "Not available.",
-        why_it_matters=data.get("why_it_matters") or "Not available.",
-        key_terms=key_terms,
-        key_takeaways=takeaways,
-        beginner_explanation=data.get("beginner_explanation") or "Not available.",
-    )
+    articles = []
+    for item in items:
+        if not isinstance(item, dict) or not item.get("title") or item["title"] == "[Removed]":
+            continue
+        articles.append(Article(
+            title=item["title"],
+            description=item.get("description") or "",
+            content=item.get("content") or "",
+            url=item.get("url") or "",
+            urlToImage=item.get("urlToImage") or "",
+            publishedAt=item.get("publishedAt") or "",
+            source=item.get("source") or {"name": "Unknown"},
+        ))
+    return articles[:page_size], "live"

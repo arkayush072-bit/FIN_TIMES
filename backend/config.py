@@ -1,4 +1,5 @@
-from pydantic_settings import BaseSettings
+from pathlib import Path
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 
 
@@ -6,13 +7,13 @@ class Settings(BaseSettings):
     NEWS_API_KEY: str = ""
     GROQ_API_KEY: str = ""
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
-    ALLOWED_ORIGINS: str = "http://localhost:5500,http://127.0.0.1:5500"
-    NEWS_PAGE_SIZE: int = 12
+    ALLOWED_ORIGINS: str = "http://localhost:8000,http://127.0.0.1:8000"
     NEWS_API_URL: str = "https://newsapi.org/v2/everything"
 
-    class Config:
-        env_file = ".env"
-        extra = "ignore"
+    model_config = SettingsConfigDict(
+        env_file=Path(__file__).resolve().parent.parent / ".env",
+        extra="ignore",
+    )
 
     @property
     def allowed_origins_list(self) -> list[str]:
