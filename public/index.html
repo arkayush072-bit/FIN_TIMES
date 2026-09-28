@@ -1,375 +1,1142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Threshold — Rowan Park real estate with Mara Delgado</title>
-<meta name="description" content="Featured homes, neighborhood field notes, and fourteen years of Rowan Park know-how. Threshold is the residential practice of agent Mara Delgado.">
-<meta property="og:title" content="Threshold — Rowan Park real estate with Mara Delgado">
-<meta property="og:description" content="The agent site that sells the neighborhood, not just the square footage.">
-<meta property="og:image" content="https://hatchable.com/storage/sites/threshold/hero-house.jpg">
-<meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23FAF8F4'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='38' fill='%238C5A3A' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  /* THRESHOLD — theme tokens. Re-tune the whole site here. */
-  :root{
-    --cream:#FAF8F4;          /* page ground */
-    --cream-2:#F1EBE1;        /* lifted panels */
-    --ink:#26241F;            /* primary text */
-    --ink-dim:rgba(38,36,31,0.62);
-    --umber:#8C5A3A;          /* the one accent */
-    --umber-soft:#C99A72;     /* accent for dark grounds (hero) */
-    --hairline:rgba(38,36,31,0.14);
-    --photo-fallback:#E4DACB; /* behind every image slot */
-    --display:'Marcellus',Georgia,serif;
-    --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
-    --pad:clamp(20px,4.5vw,64px);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
-  img{display:block;max-width:100%}
-  a{color:inherit;text-decoration:none}
-  ::selection{background:var(--umber);color:var(--cream)}
-  :focus-visible{outline:2px solid var(--umber);outline-offset:3px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FinNews AI - AI-powered financial news simplification dashboard" />
+  <title>FinNews AI</title>
 
-  .kicker{font-size:11.5px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:var(--umber)}
-  h1 em,h2 em{font-style:normal;color:var(--umber)} /* Marcellus has no italic; em = accent color */
-  .measure{max-width:1180px;margin:0 auto}
-  section{padding:clamp(72px,10.5vw,132px) var(--pad)}
+  <style>
+    :root {
+      --bg: #070b11;
+      --panel: #111821;
+      --panel-2: #17212c;
+      --border: #263341;
+      --text: #f4f7fb;
+      --muted: #91a0b2;
+      --accent: #3b82f6;
+      --accent-2: #60a5fa;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 18px 50px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
 
-  /* -- Nav -- */
-  .nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);color:var(--cream);transition:background .35s,padding .35s,color .35s,border-color .35s;border-bottom:1px solid transparent}
-  .nav.is-scrolled{background:rgba(250,248,244,0.93);backdrop-filter:blur(10px);padding:14px var(--pad);color:var(--ink);border-bottom-color:var(--hairline)}
-  .nav.menu-open{color:var(--ink)}
-  .nav-mark{font-family:var(--display);font-size:20px;letter-spacing:0.3em;text-transform:uppercase}
-  .nav-links{display:flex;align-items:center;gap:32px;font-size:12.5px;letter-spacing:0.09em;text-transform:uppercase}
-  .nav-links a{opacity:0.78;transition:opacity .2s}
-  .nav-links a:hover{opacity:1}
-  .nav-cta{border:1px solid currentColor;border-radius:999px;padding:9px 20px;opacity:1 !important;transition:background .2s,border-color .2s,color .2s}
-  .nav-cta:hover{background:var(--umber);border-color:var(--umber);color:var(--cream)}
-  .nav-burger{display:none;background:none;border:0;color:currentColor;width:40px;height:40px;cursor:pointer}
-  .nav-burger svg{width:22px;height:22px}
-  @media (max-width:760px){
-    .nav-links{position:fixed;inset:0;background:var(--cream);color:var(--ink);flex-direction:column;justify-content:center;gap:28px;font-size:16px;transform:translateY(-102%);transition:transform .4s cubic-bezier(.7,0,.3,1)}
-    .nav-links.is-open{transform:none}
-    .nav-burger{display:grid;place-items:center;position:relative;z-index:60}
-  }
+    * { box-sizing: border-box; }
 
-  /* -- Hero -- */
-  .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:0 var(--pad) clamp(52px,9vh,100px);isolation:isolate;color:var(--cream)}
-  .hero-bg{position:absolute;inset:0;z-index:-2;background:#46372A url('https://hatchable.com/storage/sites/threshold/hero-house.jpg') center/cover no-repeat}
-  .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(28,23,18,0.38) 0%,rgba(28,23,18,0.12) 45%,rgba(28,23,18,0.74) 100%)}
-  .hero-inner{max-width:960px}
-  .hero .kicker{color:var(--umber-soft)}
-  .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(46px,8.4vw,110px);line-height:1.02;letter-spacing:0.005em;margin-top:16px}
-  .hero h1 em{color:var(--umber-soft)}
-  .hero-lede{margin-top:20px;max-width:34em;font-size:clamp(15px,1.8vw,17px);color:rgba(250,248,244,0.85)}
-  .hero-sub{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:26px;font-size:12.5px;letter-spacing:0.11em;text-transform:uppercase;color:rgba(250,248,244,0.72)}
-  .hero-sub span{display:inline-flex;align-items:center;gap:10px}
-  .hero-sub i{width:4px;height:4px;border-radius:50%;background:var(--umber-soft);flex:none}
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(59,130,246,.16), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
 
-  /* -- Section headers -- */
-  .sec-h{margin-bottom:clamp(36px,5vw,56px)}
-  .sec-h .kicker{display:block;margin-bottom:16px}
-  .sec-h h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4.4vw,52px);line-height:1.08;letter-spacing:0.005em}
+    button, input, select { font: inherit; }
 
-  /* -- Listings -- */
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-  @media (max-width:860px){.cards{grid-template-columns:1fr;gap:38px}}
-  .card-media{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--photo-fallback)}
-  .card-media img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.2,.6,.2,1)}
-  .card:hover .card-media img{transform:scale(1.04)}
-  .badge{position:absolute;top:14px;left:14px;background:rgba(250,248,244,0.93);color:var(--ink);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
-  .card h3{font-family:var(--display);font-weight:400;font-size:23px;margin-top:18px}
-  .card-line{font-size:14px;color:var(--ink-dim);line-height:1.6;margin-top:6px;max-width:30em}
-  .spec-row{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--hairline);font-size:12px;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink-dim);font-variant-numeric:tabular-nums lining-nums}
-  .spec-row i{width:4px;height:4px;border-radius:50%;background:var(--umber);flex:none}
-  .spec-row .price{margin-left:auto;color:var(--ink);font-weight:500;letter-spacing:0.06em}
-  .sold-strip{margin-top:clamp(36px,5vw,52px);padding-top:20px;border-top:1px solid var(--hairline);font-size:13px;letter-spacing:0.05em;color:var(--ink-dim)}
-  .sold-strip b{font-weight:600;color:var(--umber);letter-spacing:0.16em;text-transform:uppercase;font-size:11px;margin-right:14px}
+    button {
+      cursor: pointer;
+      border: 0;
+    }
 
-  /* -- About / stats -- */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline);margin-bottom:clamp(44px,6vw,72px)}
-  @media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
-  .stat{padding:clamp(20px,3vw,32px) 18px clamp(20px,3vw,32px) 0}
-  .stat + .stat{border-left:1px solid var(--hairline);padding-left:clamp(18px,2.6vw,30px)}
-  @media (max-width:760px){.stat:nth-child(3){border-left:0;padding-left:0}}
-  .stat b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(34px,4.6vw,56px);line-height:1.1;font-variant-numeric:tabular-nums}
-  .stat span{display:block;margin-top:6px;font-size:11.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-dim)}
-  .about-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(36px,5.5vw,80px);align-items:center}
-  @media (max-width:860px){.about-grid{grid-template-columns:1fr}}
-  .about-photo{aspect-ratio:3/4;overflow:hidden;background:var(--photo-fallback)}
-  .about-photo img{width:100%;height:100%;object-fit:cover}
-  .about-copy .kicker{display:block;margin-bottom:18px}
-  .about-copy h2{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.8vw,42px);line-height:1.14;margin-bottom:22px}
-  .about-copy p{color:var(--ink-dim);font-size:15.5px;max-width:38em}
-  .about-copy p + p{margin-top:16px}
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+    }
 
-  /* -- Buyers & sellers -- */
-  .journeys{background:var(--cream-2);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)}
-  .jour-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(44px,6vw,96px)}
-  @media (max-width:860px){.jour-grid{grid-template-columns:1fr}}
-  .journey .kicker{display:block;margin-bottom:14px}
-  .journey h3{font-family:var(--display);font-weight:400;font-size:clamp(24px,2.8vw,30px);line-height:1.15;margin-bottom:26px}
-  .steps{list-style:none;counter-reset:step}
-  .steps li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:20px 0;border-top:1px solid var(--hairline)}
-  .steps li::before{counter-increment:step;content:counter(step,decimal-leading-zero);font-family:var(--display);font-size:22px;color:var(--umber);line-height:1.4}
-  .steps h4{font-size:15px;font-weight:600;letter-spacing:0.02em;margin-bottom:4px}
-  .steps p{font-size:14px;color:var(--ink-dim);max-width:34em}
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(7,11,17,.82);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
 
-  /* -- Neighborhood notes -- */
-  .notes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(26px,4vw,48px)}
-  @media (max-width:860px){.notes{grid-template-columns:1fr;gap:36px}}
-  .note{border-top:2px solid var(--umber);padding-top:20px}
-  .note .kicker{display:block;margin-bottom:12px;color:var(--ink-dim)}
-  .note h3{font-family:var(--display);font-weight:400;font-size:22px;margin-bottom:10px}
-  .note p{font-size:14px;color:var(--ink-dim)}
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
 
-  /* -- Testimonials -- */
-  .quotes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,72px)}
-  @media (max-width:860px){.quotes{grid-template-columns:1fr}}
-  .quotes blockquote{font-family:var(--display);font-weight:400;font-size:clamp(19px,2.3vw,25px);line-height:1.5;max-width:26em}
-  .quotes blockquote::before{content:"\201C";color:var(--umber)}
-  .quotes blockquote::after{content:"\201D";color:var(--umber)}
-  .quotes cite{display:block;margin-top:14px;font-family:var(--sans);font-style:normal;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-dim)}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -.4px;
+    }
 
-  /* -- Contact -- */
-  .contact{text-align:center;padding-bottom:clamp(84px,11vw,140px)}
-  .contact .kicker{display:block;margin-bottom:18px}
-  .contact h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,4.8vw,56px);line-height:1.08;max-width:16em;margin:0 auto 18px}
-  .contact > p{color:var(--ink-dim);max-width:36em;margin:0 auto 34px;font-size:15.5px}
-  .cta-row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:center}
-  .btn-solid{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:var(--cream);border-radius:999px;padding:14px 30px;font-size:13px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;transition:background .2s}
-  .btn-solid:hover{background:var(--umber)}
-  .mail-link{font-family:var(--display);font-size:clamp(17px,2.2vw,21px);border-bottom:1.5px solid var(--umber);padding-bottom:3px;transition:color .2s}
-  .mail-link:hover{color:var(--umber)}
-  .office{margin-top:30px;font-size:13.5px;color:var(--ink-dim)}
-  .office a{border-bottom:1px solid var(--umber);padding-bottom:2px}
-  .fineprint{margin:38px auto 0;max-width:46em;font-size:11.5px;line-height:1.8;color:var(--ink-dim)}
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      color: white;
+      box-shadow: 0 8px 28px rgba(37,99,235,.32);
+    }
 
-  /* -- Footer -- */
-  footer{border-top:1px solid var(--hairline);padding:28px var(--pad);display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;font-size:12.5px;color:var(--ink-dim)}
-  footer .nav-mark{font-size:14px;color:var(--ink)}
-  footer a:hover{color:var(--ink)}
+    .nav-actions {
+      display: flex;
+      gap: 9px;
+    }
 
-  /* -- Reveal animation -- */
-  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.6,.2,1)}
-  .reveal.is-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    .reveal{opacity:1;transform:none;transition:none}
-    .card-media img{transition:none}
-    html{scroll-behavior:auto}
-  }
-</style>
+    .icon-btn, .secondary-btn {
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 9px 13px;
+    }
+
+    .icon-btn:hover, .secondary-btn:hover {
+      border-color: #3a4a5b;
+      background: var(--panel-2);
+    }
+
+    main { padding: 42px 0 70px; }
+
+    .hero {
+      padding: 42px 0 26px;
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 30px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: .98;
+      letter-spacing: -3px;
+      margin: 12px 0 18px;
+      max-width: 760px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 680px;
+      font-size: 17px;
+      margin: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      padding: 18px;
+      border: 1px solid var(--border);
+      background: rgba(17,24,33,.8);
+      border-radius: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 25px;
+      margin-bottom: 2px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      flex: 1 1 300px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 12px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 13px 4px;
+      background: transparent;
+      color: var(--text);
+      border: 0;
+      outline: 0;
+    }
+
+    .primary-btn {
+      background: var(--accent);
+      color: white;
+      padding: 12px 17px;
+      border-radius: 12px;
+      font-weight: 750;
+      transition: transform .15s, background .15s;
+    }
+
+    .primary-btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    .primary-btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      scrollbar-width: thin;
+    }
+
+    .filter {
+      white-space: nowrap;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 9px 13px;
+      border-radius: 999px;
+    }
+
+    .filter.active {
+      color: white;
+      background: rgba(59,130,246,.17);
+      border-color: rgba(59,130,246,.6);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 30px 0 15px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 25px;
+      letter-spacing: -.7px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status.ok { color: var(--success); }
+    .status.error { color: #fca5a5; }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 17px;
+    }
+
+    .card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      background: linear-gradient(180deg, rgba(23,33,44,.94), rgba(17,24,33,.94));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      background: #0e141c;
+    }
+
+    .card-body {
+      padding: 17px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .meta {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .source {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      line-height: 1.25;
+      margin: 0 0 9px;
+      letter-spacing: -.35px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0 0 16px;
+    }
+
+    .card-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ai-btn {
+      flex: 1;
+      min-width: 130px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: white;
+      background: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .article-btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: var(--text);
+      background: #0d141c;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px 20px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+    }
+
+    .skeleton {
+      height: 350px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(90deg, #101720, #1a2530, #101720);
+      background-size: 220% 100%;
+      animation: shimmer 1.3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -20% 0; }
+    }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 24px 0 40px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(7px);
+      z-index: 50;
+      display: none;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.show { display: grid; place-items: center; }
+
+    .modal {
+      width: min(760px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #101720;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.55);
+      padding: 25px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: start;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .close {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--panel-2);
+      color: white;
+      font-size: 20px;
+    }
+
+    .ai-content {
+      margin-top: 20px;
+    }
+
+    .ai-block {
+      padding: 15px;
+      background: #0c131b;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin: 11px 0;
+    }
+
+    .ai-block h4 {
+      margin: 0 0 7px;
+      color: var(--accent-2);
+      font-size: 14px;
+    }
+
+    .ai-block p, .ai-block li {
+      color: #d7e0ea;
+      font-size: 14px;
+    }
+
+    .term {
+      display: inline-block;
+      padding: 7px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 9px;
+      margin: 4px;
+      color: #dbeafe;
+      font-size: 13px;
+    }
+
+    .settings-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+      margin: 16px 0;
+    }
+
+    .settings-row label {
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .settings-row input {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0b1118;
+      color: white;
+      outline: none;
+    }
+
+    .notice {
+      padding: 12px;
+      border-radius: 11px;
+      background: rgba(245,158,11,.1);
+      border: 1px solid rgba(245,158,11,.25);
+      color: #fcd34d;
+      font-size: 12px;
+      margin: 14px 0;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .news-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(100% - 22px, 1180px); }
+      main { padding-top: 20px; }
+      .nav { min-height: 62px; }
+      .brand { font-size: 17px; }
+      .hero { padding-top: 30px; }
+      h1 { letter-spacing: -2px; }
+      .news-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .toolbar { align-items: stretch; }
+      .search { flex-basis: 100%; }
+      .primary-btn { flex: 1; }
+    }
+  </style>
 </head>
+
 <body>
-
-<nav class="nav" id="nav">
-  <a class="nav-mark" href="/">Threshold</a>
-  <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
-  </button>
-  <div class="nav-links" id="navLinks">
-    <a href="#listings">Listings</a>
-    <a href="#about">Mara</a>
-    <a href="#journeys">Buyers &amp; Sellers</a>
-    <a href="#neighborhood">Neighborhood</a>
-    <a href="#contact">Contact</a>
-    <a class="nav-cta" href="tel:+15555550147">(555) 555-0147</a>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="hero-bg" role="img" aria-label="A craftsman house on Hawthorne Lane at golden hour, porch lights on"></div>
-  <div class="hero-inner">
-    <span class="kicker">Rowan Park · Residential</span>
-    <h1>Homes, <em>found.</em></h1>
-    <p class="hero-lede">Fourteen years of matching people to the tree-lined blocks of Rowan Park. Threshold sells the street, not just the square footage.</p>
-    <div class="hero-sub">
-      <span><i></i>Mara Delgado, agent</span>
-      <span><i></i>300+ homes matched</span>
-      <span><i></i>(555) 555-0147</span>
-    </div>
-  </div>
-</header>
-
-<main>
-<section id="listings">
-  <div class="measure">
-    <div class="sec-h reveal">
-      <span class="kicker">On the market</span>
-      <h2>Three doors, <em>open.</em></h2>
-    </div>
-    <div class="cards">
-      <figure class="card reveal">
-        <div class="card-media"><img src="https://hatchable.com/storage/sites/threshold/listing-1.jpg" alt="The renovated oak and white kitchen at 18 Hawthorne Lane, morning light" loading="lazy"></div>
-        <figcaption>
-          <h3>18 Hawthorne Lane</h3>
-          <p class="card-line">A 1912 craftsman with its original fir floors and a kitchen that finally caught up to the porch.</p>
-          <p class="spec-row"><span>4 bd</span><i></i><span>2.5 ba</span><i></i><span>2,340 sq ft</span><span class="price">$1,285,000</span></p>
-        </figcaption>
-      </figure>
-      <figure class="card reveal" style="transition-delay:.08s">
-        <div class="card-media"><span class="badge">In contract</span><img src="https://hatchable.com/storage/sites/threshold/listing-2.jpg" alt="The brick townhouse at 204 Bellamy Street under a red maple in autumn" loading="lazy"></div>
-        <figcaption>
-          <h3>204 Bellamy Street</h3>
-          <p class="card-line">The middle house of Bellamy's 1926 brick row, with a maple out front that earns its October.</p>
-          <p class="spec-row"><span>3 bd</span><i></i><span>2 ba</span><i></i><span>1,780 sq ft</span><span class="price">$942,000</span></p>
-        </figcaption>
-      </figure>
-      <figure class="card reveal" style="transition-delay:.16s">
-        <div class="card-media"><img src="https://hatchable.com/storage/sites/threshold/listing-3.jpg" alt="The post-and-beam living room at 77 Carver Avenue in afternoon sun" loading="lazy"></div>
-        <figcaption>
-          <h3>77 Carver Avenue</h3>
-          <p class="card-line">A 1958 post-and-beam that hoards afternoon light and never wastes a square foot.</p>
-          <p class="spec-row"><span>3 bd</span><i></i><span>2 ba</span><i></i><span>1,960 sq ft</span><span class="price">$1,050,000</span></p>
-        </figcaption>
-      </figure>
-    </div>
-    <p class="sold-strip reveal"><b>Recently closed</b>41 Alder Street, nine days, over ask &nbsp;·&nbsp; 128 Bellamy Street, sold before the sign went up &nbsp;·&nbsp; 9 Carver Avenue, full price</p>
-  </div>
-</section>
-
-<section id="about">
-  <div class="measure">
-    <div class="stats reveal">
-      <div class="stat"><b>14</b><span>Years in Rowan Park</span></div>
-      <div class="stat"><b>300+</b><span>Homes matched</span></div>
-      <div class="stat"><b>$240M</b><span>Career volume</span></div>
-      <div class="stat"><b>9</b><span>Median days on market</span></div>
-    </div>
-    <div class="about-grid">
-      <div class="about-photo reveal">
-        <img src="https://hatchable.com/storage/sites/threshold/agent.jpg" alt="Mara Delgado on a craftsman front porch, smiling" loading="lazy">
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-mark">F</div>
+        <span>FinNews AI</span>
       </div>
-      <div class="about-copy reveal" style="transition-delay:.08s">
-        <span class="kicker">The agent</span>
-        <h2>Mara Delgado answers her own phone.</h2>
-        <p>Mara has walked these blocks daily since 2012, first as the neighbor with the fast dog, now as the agent who knows which houses hide knob-and-tube wiring and which merely hide good bones. Her buyers tour the neighborhood on foot before they ever tour a house.</p>
-        <p>She works alone, on purpose, with one licensed assistant and a list of tradespeople earned across 300 closings. Clients get her cell number, not a team routing line, and the advice she would give her own sister. Twice a year, that advice is: do not buy this one.</p>
+      <div class="nav-actions">
+        <button class="secondary-btn" id="settingsBtn">⚙ API Settings</button>
+        <button class="secondary-btn" id="refreshBtn">↻ Refresh</button>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<section class="journeys" id="journeys">
-  <div class="measure">
-    <div class="sec-h reveal">
-      <span class="kicker">Working with Mara</span>
-      <h2>Whichever side of the door <em>you're on.</em></h2>
-    </div>
-    <div class="jour-grid">
-      <div class="journey reveal">
-        <span class="kicker">Buying</span>
-        <h3>Find it without losing your head.</h3>
-        <ol class="steps">
-          <li><div><h4>Walk first</h4><p>Before any showing, we walk two neighborhoods with coffee in hand. You learn what a fair price looks like from the sidewalk, before a staged kitchen can argue with you.</p></div></li>
-          <li><div><h4>See it clearly</h4><p>On tours I point at the roof, the panel, and the sewer line while everyone else admires the styling. You will know what the house is, not what it is dressed as.</p></div></li>
-          <li><div><h4>Win it calmly</h4><p>An offer built from what actually closed on that street, terms a seller takes seriously, and a steady voice from inspection to keys.</p></div></li>
-        </ol>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">AI Financial News Simplifier</div>
+        <h1>Understand financial news in minutes.</h1>
+        <p>
+          Fetch current business and market news, then simplify complex articles
+          into clear, beginner-friendly explanations using AI.
+        </p>
       </div>
-      <div class="journey reveal" style="transition-delay:.08s">
-        <span class="kicker">Selling</span>
-        <h3>Sell the street, then the house.</h3>
-        <ol class="steps">
-          <li><div><h4>Price from evidence</h4><p>Comps I have stood inside, not an algorithm's guess from three towns over. We set a number the market recognizes on day one.</p></div></li>
-          <li><div><h4>Prepare what pays</h4><p>Two weekends of the right work. My crew list, my stager, and nothing that will not return its cost at the closing table.</p></div></li>
-          <li><div><h4>Tell it properly</h4><p>Photography at golden hour, copy that sells your block as hard as your kitchen, and a median of nine days to contract.</p></div></li>
-        </ol>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="articleCount">0</strong>
+          <span>Articles loaded</span>
+        </div>
+        <div class="stat">
+          <strong id="modeLabel">Demo</strong>
+          <span>Data mode</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="toolbar">
+        <div class="search">
+          🔎
+          <input id="searchInput" type="search"
+                 placeholder="Search finance, stocks, inflation, companies..." />
+        </div>
+        <button class="primary-btn" id="searchBtn">Search News</button>
+        <button class="secondary-btn" id="latestBtn">Latest</button>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter active" data-query="finance">Finance</button>
+        <button class="filter" data-query="stock market">Markets</button>
+        <button class="filter" data-query="economy inflation">Economy</button>
+        <button class="filter" data-query="business companies">Business</button>
+        <button class="filter" data-query="technology">Technology</button>
+        <button class="filter" data-query="India finance">India</button>
+        <button class="filter" data-query="global economy">Global</button>
+      </div>
+    </section>
+
+    <div class="section-head">
+      <h2>Latest Financial News</h2>
+      <div class="status" id="status">Ready</div>
+    </div>
+
+    <section class="news-grid" id="newsGrid"></section>
+  </main>
+
+  <footer>
+    <div class="container">
+      FinNews AI provides AI-generated summaries for educational and informational
+      purposes only. It is not financial, investment, or trading advice.
+      Always verify important information using the original source.
+    </div>
+  </footer>
+
+  <!-- AI SUMMARY MODAL -->
+  <div class="modal-backdrop" id="summaryModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">AI Simplification</div>
+          <h2 id="summaryTitle">Analyzing article...</h2>
+        </div>
+        <button class="close" id="closeSummary">×</button>
+      </div>
+      <div class="ai-content" id="aiContent">
+        <div class="empty">Analyzing article with AI...</div>
       </div>
     </div>
   </div>
-</section>
 
-<section id="neighborhood">
-  <div class="measure">
-    <div class="sec-h reveal">
-      <span class="kicker">Field notes</span>
-      <h2>Rowan Park, <em>annotated.</em></h2>
-    </div>
-    <div class="notes">
-      <div class="note reveal">
-        <span class="kicker">No. 01 · Coffee</span>
-        <h3>The coffee census</h3>
-        <p>Fern &amp; Filter on Bellamy takes the quiet 7am crowd; the porch at Odd Hours on Carver collects the strollers by nine. If your offer needs writing on a Saturday, I am at the corner table at Fern's.</p>
+  <!-- API SETTINGS MODAL -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Configuration</div>
+          <h2>API Settings</h2>
+        </div>
+        <button class="close" id="closeSettings">×</button>
       </div>
-      <div class="note reveal" style="transition-delay:.08s">
-        <span class="kicker">No. 02 · Schools</span>
-        <h3>The catchment line</h3>
-        <p>Rowan Park Elementary's boundary runs down the middle of Alder Street. The east side walks, the west side drives, and the line moves prices by roughly four percent. I map it on every tour.</p>
+
+      <div class="notice">
+        For this single-file HTML version, keys are stored in your browser's
+        localStorage. This is convenient for a college/demo project but is NOT
+        suitable for a public production deployment. For production, put API
+        calls behind a backend/proxy so secrets are never exposed to users.
       </div>
-      <div class="note reveal" style="transition-delay:.16s">
-        <span class="kicker">No. 03 · Streets</span>
-        <h3>Streets to watch</h3>
-        <p>Hawthorne holds its craftsman stock like a museum. Bellamy's brick rows trade fast and quietly, often before the sign goes up. And Carver, the mid-century strip everyone overlooked for a decade, is having its moment.</p>
+
+      <div class="settings-row">
+        <label for="newsApiKey">NewsAPI key</label>
+        <input id="newsApiKey" type="password" placeholder="Paste your NewsAPI key" />
+      </div>
+
+      <div class="settings-row">
+        <label for="groqApiKey">Groq API key (optional, for AI summaries)</label>
+        <input id="groqApiKey" type="password" placeholder="Paste your Groq API key" />
+      </div>
+
+      <div class="card-actions">
+        <button class="primary-btn" id="saveSettings">Save Settings</button>
+        <button class="secondary-btn" id="clearSettings">Clear Keys</button>
       </div>
     </div>
   </div>
-</section>
 
-<section id="words">
-  <div class="measure">
-    <div class="sec-h reveal">
-      <span class="kicker">In their words</span>
-    </div>
-    <div class="quotes">
-      <blockquote class="reveal">Mara told us not to buy the first house we loved, then found us one with better light, a real yard, and enough left over to redo the kitchen. Nobody else in this market says wait.<cite>Priya &amp; Dan, bought on Hawthorne Lane</cite></blockquote>
-      <blockquote class="reveal" style="transition-delay:.08s">Nine days, four offers, over ask. She staged the porch, rewrote the story, and somehow made packing twenty years of a house feel like the easy part.<cite>Ellen, sold on Carver Avenue</cite></blockquote>
-    </div>
-  </div>
-</section>
+  <script>
+    /*
+      ============================================================
+      FINNEWS AI - SINGLE FILE VERSION
+      ============================================================
 
-<section class="contact" id="contact">
-  <div class="reveal">
-    <span class="kicker">Begin</span>
-    <h2>The next door starts with <em>a conversation.</em></h2>
-    <p>Tell me the street you dream about, or the house you have outgrown. Three lines is plenty. I answer my own phone, and I reply the same day.</p>
-    <div class="cta-row">
-      <a class="btn-solid" href="tel:+15555550147">Call (555) 555-0147</a>
-      <a class="mail-link" href="mailto:mara@threshold.example?subject=A%20house%20in%20Rowan%20Park">mara@threshold.example</a>
-    </div>
-    <p class="office">The office is at 3 Bellamy Street, Rowan Park · <a href="https://maps.google.com/?q=3+Bellamy+Street+Rowan+Park" target="_blank" rel="noopener">Open in Maps</a></p>
-    <p class="fineprint">Threshold is the residential practice of Mara Delgado, broker associate with Wren &amp; Porter Realty, 3 Bellamy Street, Rowan Park. Lic. #RE-2210-0834. Equal Housing Opportunity. Featured homes are examples of current work; availability changes weekly.</p>
-  </div>
-</section>
-</main>
+      APIs:
+      - NewsAPI: https://newsapi.org/v2/everything
+      - Groq:    https://api.groq.com/openai/v1/chat/completions
 
-<footer>
-  <span class="nav-mark">Threshold</span>
-  <span><a href="tel:+15555550147">(555) 555-0147</a> &nbsp;·&nbsp; <a href="mailto:mara@threshold.example">mara@threshold.example</a></span>
-  <span>Mara Delgado · Wren &amp; Porter Realty · Lic. #RE-2210-0834</span>
-</footer>
+      IMPORTANT:
+      Direct browser API calls expose the keys to the user/browser.
+      This version is intended for learning/demo use.
+      Use a backend proxy for production.
+    */
 
-<script>
-  // Nav: solidify on scroll.
-  const nav = document.getElementById('nav');
-  const onScroll = () => nav.classList.toggle('is-scrolled', scrollY > 24);
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    const CONFIG = {
+      NEWS_API_URL: "https://newsapi.org/v2/everything",
+      GROQ_API_URL: "https://api.groq.com/openai/v1/chat/completions",
+      GROQ_MODEL: "llama-3.3-70b-versatile",
+      DEFAULT_QUERY: "finance",
+      PAGE_SIZE: 12,
+      CACHE_TTL_MS: 10 * 60 * 1000
+    };
 
-  // Mobile menu.
-  const burger = document.getElementById('burger'), links = document.getElementById('navLinks');
-  burger.addEventListener('click', () => {
-    const open = links.classList.toggle('is-open');
-    nav.classList.toggle('menu-open', open);
-    burger.setAttribute('aria-expanded', open);
-  });
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    links.classList.remove('is-open'); nav.classList.remove('menu-open');
-  }));
+    const demoArticles = [
+      {
+        title: "Markets watch inflation and interest-rate developments",
+        description: "Investors are monitoring inflation data and central-bank decisions for signals about borrowing costs and economic growth.",
+        content: "Financial markets often react to changes in inflation and interest rates. Higher interest rates can increase borrowing costs, while lower rates can encourage borrowing and investment. Investors also watch employment, economic growth and corporate earnings.",
+        url: "https://news.google.com/",
+        urlToImage: "",
+        publishedAt: new Date().toISOString(),
+        source: { name: "FinNews Demo" }
+      },
+      {
+        title: "Companies focus on earnings and business growth",
+        description: "Corporate earnings reports provide information about revenue, costs, profits and future business expectations.",
+        content: "Earnings reports help readers understand how a company performed during a period. Revenue is the money generated by a company, while profit is what remains after expenses. Investors often compare results with previous periods and expectations.",
+        url: "https://news.google.com/",
+        urlToImage: "",
+        publishedAt: new Date().toISOString(),
+        source: { name: "FinNews Demo" }
+      },
+      {
+        title: "Economic activity remains a key market focus",
+        description: "Economic indicators can influence markets because they provide information about growth, consumer activity and business conditions.",
+        content: "Economic indicators such as GDP growth, inflation, unemployment and consumer spending help describe the condition of an economy. Financial markets can react when new data differs significantly from expectations.",
+        url: "https://news.google.com/",
+        urlToImage: "",
+        publishedAt: new Date().toISOString(),
+        source: { name: "FinNews Demo" }
+      }
+    ];
 
-  // Reveal on scroll.
-  // Headless capture + crawlers: skip the scroll-reveal choreography so
-  // full-page screenshots and archival renders see every section.
-  if (navigator.webdriver) { document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-in')); document.querySelectorAll('img[loading="lazy"]').forEach(img => img.loading = 'eager'); }
+    let articles = [];
+    let activeQuery = CONFIG.DEFAULT_QUERY;
+    let searchTimer = null;
 
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-  }), { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-</script>
+    const $ = (id) => document.getElementById(id);
+
+    function getKeys() {
+      return {
+        news: localStorage.getItem("finnews_news_api_key") || "",
+        groq: localStorage.getItem("finnews_groq_api_key") || ""
+      };
+    }
+
+    function setStatus(message, type = "") {
+      $("status").textContent = message;
+      $("status").className = "status " + type;
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function truncate(text, max = 700) {
+      if (!text) return "";
+      return text.length > max ? text.slice(0, max) + "..." : text;
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "Unknown date";
+      const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) return "Unknown date";
+      return date.toLocaleString([], {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function imageForArticle(article) {
+      if (article.urlToImage) return article.urlToImage;
+      const title = encodeURIComponent((article.title || "Financial News").slice(0, 45));
+      return `https://placehold.co/800x450/111821/93c5fd?text=${title}`;
+    }
+
+    function renderSkeletons() {
+      $("newsGrid").innerHTML = Array.from({ length: 6 })
+        .map(() => `<div class="skeleton"></div>`)
+        .join("");
+    }
+
+    function renderArticles(list = articles) {
+      $("articleCount").textContent = list.length;
+
+      if (!list.length) {
+        $("newsGrid").innerHTML = `
+          <div class="empty">
+            <h3>No financial news found</h3>
+            <p>Try another search term or category.</p>
+          </div>`;
+        return;
+      }
+
+      $("newsGrid").innerHTML = list.map((article, index) => `
+        <article class="card">
+          <img
+            class="card-image"
+            src="${escapeHtml(imageForArticle(article))}"
+            alt=""
+            loading="lazy"
+            onerror="this.src='https://placehold.co/800x450/111821/93c5fd?text=FinNews+AI'"
+          />
+
+          <div class="card-body">
+            <div class="meta">
+              <span class="source">${escapeHtml(article.source?.name || "Unknown source")}</span>
+              <span>•</span>
+              <span>${escapeHtml(formatDate(article.publishedAt))}</span>
+            </div>
+
+            <h3>${escapeHtml(article.title || "Untitled article")}</h3>
+
+            <p>${escapeHtml(truncate(article.description || article.content || "No description available.", 180))}</p>
+
+            <div class="card-actions">
+              <button class="ai-btn" data-ai-index="${index}">✨ Simplify with AI</button>
+              <a class="article-btn"
+                 href="${escapeHtml(article.url || "#")}"
+                 target="_blank"
+                 rel="noopener noreferrer">Read Original</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      document.querySelectorAll("[data-ai-index]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const index = Number(btn.dataset.aiIndex);
+          openSummary(articles[index]);
+        });
+      });
+    }
+
+    function cacheKey(article) {
+      return "finnews_summary_" + btoa(unescape(encodeURIComponent(article.url || article.title || ""))).slice(0, 100);
+    }
+
+    function getCachedSummary(article) {
+      try {
+        const raw = localStorage.getItem(cacheKey(article));
+        if (!raw) return null;
+        const item = JSON.parse(raw);
+        if (Date.now() - item.time > CONFIG.CACHE_TTL_MS) {
+          localStorage.removeItem(cacheKey(article));
+          return null;
+        }
+        return item.data;
+      } catch {
+        return null;
+      }
+    }
+
+    function setCachedSummary(article, data) {
+      try {
+        localStorage.setItem(cacheKey(article), JSON.stringify({
+          time: Date.now(),
+          data
+        }));
+      } catch {
+        // Storage can fail in private browsing or when quota is reached.
+      }
+    }
+
+    function demoSummary(article) {
+      return {
+        summary: truncate(article.description || article.content, 360),
+        what_happened: "This demo article discusses a financial or economic development and the factors readers should watch.",
+        why_it_matters: "Financial news can affect business expectations, borrowing costs, consumer activity and market sentiment.",
+        key_terms: [
+          { term: "Inflation", meaning: "A general increase in prices over time." },
+          { term: "Interest rate", meaning: "The cost of borrowing money or the return earned on lending." },
+          { term: "Market sentiment", meaning: "The overall attitude investors have toward a market or asset." }
+        ],
+        key_takeaways: [
+          "Check the original article for exact figures and context.",
+          "Market reactions can change as new information becomes available.",
+          "This summary is educational and is not investment advice."
+        ],
+        beginner_explanation: "In simple terms, the article describes an economic or business event and explains why people who follow financial markets may pay attention to it."
+      };
+    }
+
+    function normalizeAIText(text) {
+      let cleaned = (text || "").trim();
+
+      cleaned = cleaned.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
+
+      try {
+        return JSON.parse(cleaned);
+      } catch {
+        return {
+          summary: cleaned,
+          what_happened: "",
+          why_it_matters: "",
+          key_terms: [],
+          key_takeaways: [],
+          beginner_explanation: ""
+        };
+      }
+    }
+
+    async function summarizeWithGroq(article) {
+      const keys = getKeys();
+
+      if (!keys.groq) {
+        return demoSummary(article);
+      }
+
+      const articleText = truncate(
+        [
+          article.title,
+          article.description,
+          article.content
+        ].filter(Boolean).join("\\n\\n"),
+        6500
+      );
+
+      const systemPrompt = `
+You are FinNews AI, a financial news simplification assistant.
+
+Your job is to explain the supplied news article clearly and accurately.
+
+Rules:
+- Use only information present in the article.
+- Never invent facts, statistics, quotes or causes.
+- Preserve important numbers and names exactly when they are provided.
+- Explain financial terminology in simple language.
+- Do not give personalized investment advice.
+- Do not tell the reader to buy, sell or hold any asset.
+- Do not predict a stock price or market outcome.
+- If the article does not provide enough information, say so.
+- Keep the response concise.
+- Return ONLY valid JSON.
+
+Required JSON:
+{
+  "summary": "2-4 sentence summary",
+  "what_happened": "plain-language explanation",
+  "why_it_matters": "why the event may matter according to the article",
+  "key_terms": [
+    {"term": "term", "meaning": "simple meaning"}
+  ],
+  "key_takeaways": ["takeaway 1", "takeaway 2", "takeaway 3"],
+  "beginner_explanation": "very simple explanation for a student or beginner"
+}
+      `.trim();
+
+      const response = await fetch(CONFIG.GROQ_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${keys.groq}`
+        },
+        body: JSON.stringify({
+          model: CONFIG.GROQ_MODEL,
+          temperature: 0.2,
+          max_tokens: 900,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: articleText }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Groq error ${response.status}: ${errorText.slice(0, 180)}`);
+      }
+
+      const data = await response.json();
+      const text = data?.choices?.[0]?.message?.content || "";
+      return normalizeAIText(text);
+    }
+
+    async function openSummary(article) {
+      $("summaryModal").classList.add("show");
+      $("summaryTitle").textContent = article.title || "Financial News";
+      $("aiContent").innerHTML = `<div class="empty">✨ Analyzing article with AI...</div>`;
+
+      const cached = getCachedSummary(article);
+
+      try {
+        const summary = cached || await summarizeWithGroq(article);
+        if (!cached) setCachedSummary(article, summary);
+        renderSummary(summary);
+      } catch (error) {
+        console.error(error);
+        $("aiContent").innerHTML = `
+          <div class="ai-block">
+            <h4>AI summarization unavailable</h4>
+            <p>${escapeHtml(error.message || "Please try again later.")}</p>
+          </div>
+          <div class="notice">
+            You can still read the original article using the button on the news card.
+          </div>`;
+      }
+    }
+
+    function renderSummary(data) {
+      const terms = Array.isArray(data.key_terms)
+        ? data.key_terms.map(item => `
+            <span class="term">
+              <strong>${escapeHtml(item.term || "")}</strong> — ${escapeHtml(item.meaning || "")}
+            </span>
+          `).join("")
+        : "";
+
+      const takeaways = Array.isArray(data.key_takeaways)
+        ? `<ul>${data.key_takeaways.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>`
+        : "";
+
+      $("aiContent").innerHTML = `
+        <div class="ai-block">
+          <h4>Short Summary</h4>
+          <p>${escapeHtml(data.summary || "No summary available.")}</p>
+        </div>
+
+        <div class="ai-block">
+          <h4>What Happened?</h4>
+          <p>${escapeHtml(data.what_happened || "Not available.")}</p>
+        </div>
+
+        <div class="ai-block">
+          <h4>Why It Matters</h4>
+          <p>${escapeHtml(data.why_it_matters || "Not available.")}</p>
+        </div>
+
+        <div class="ai-block">
+          <h4>Key Financial Terms</h4>
+          ${terms || "<p>No specific terms identified.</p>"}
+        </div>
+
+        <div class="ai-block">
+          <h4>Key Takeaways</h4>
+          ${takeaways || "<p>No takeaways available.</p>"}
+        </div>
+
+        <div class="ai-block">
+          <h4>Beginner Explanation</h4>
+          <p>${escapeHtml(data.beginner_explanation || "Not available.")}</p>
+        </div>
+      `;
+    }
+
+    async function fetchNews(query = activeQuery) {
+      activeQuery = query;
+      const keys = getKeys();
+
+      renderSkeletons();
+      setStatus("Fetching news...");
+
+      if (!keys.news) {
+        $("modeLabel").textContent = "Demo";
+        articles = demoArticles;
+        renderArticles();
+        setStatus("Demo mode — add NewsAPI key for live news", "error");
+        return;
+      }
+
+      $("modeLabel").textContent = "Live";
+
+      try {
+        const params = new URLSearchParams({
+          q: query,
+          language: "en",
+          sortBy: "publishedAt",
+          pageSize: String(CONFIG.PAGE_SIZE),
+          page: "1"
+        });
+
+        const response = await fetch(`${CONFIG.NEWS_API_URL}?${params.toString()}`, {
+          headers: {
+            "X-Api-Key": keys.news
+          }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.status !== "ok") {
+          throw new Error(data.message || `NewsAPI request failed (${response.status})`);
+        }
+
+        articles = (data.articles || [])
+          .filter(a => a.title && a.title !== "[Removed]")
+          .filter(a => a.url)
+          .slice(0, CONFIG.PAGE_SIZE);
+
+        renderArticles();
+        setStatus(`${articles.length} articles loaded`, "ok");
+      } catch (error) {
+        console.error(error);
+        articles = [];
+        renderArticles();
+        setStatus("Could not fetch live news", "error");
+        $("newsGrid").innerHTML = `
+          <div class="empty">
+            <h3>NewsAPI connection failed</h3>
+            <p>${escapeHtml(error.message || "Check your API key and internet connection.")}</p>
+            <button class="primary-btn" style="margin-top:12px" id="retryBtn">Try Again</button>
+          </div>`;
+        $("retryBtn").addEventListener("click", () => fetchNews(activeQuery));
+      }
+    }
+
+    function loadSettings() {
+      const keys = getKeys();
+      $("newsApiKey").value = keys.news;
+      $("groqApiKey").value = keys.groq;
+    }
+
+    $("settingsBtn").addEventListener("click", () => {
+      loadSettings();
+      $("settingsModal").classList.add("show");
+    });
+
+    $("closeSettings").addEventListener("click", () => {
+      $("settingsModal").classList.remove("show");
+    });
+
+    $("closeSummary").addEventListener("click", () => {
+      $("summaryModal").classList.remove("show");
+    });
+
+    $("saveSettings").addEventListener("click", () => {
+      localStorage.setItem("finnews_news_api_key", $("newsApiKey").value.trim());
+      localStorage.setItem("finnews_groq_api_key", $("groqApiKey").value.trim());
+      $("settingsModal").classList.remove("show");
+      fetchNews(activeQuery);
+    });
+
+    $("clearSettings").addEventListener("click", () => {
+      localStorage.removeItem("finnews_news_api_key");
+      localStorage.removeItem("finnews_groq_api_key");
+      $("newsApiKey").value = "";
+      $("groqApiKey").value = "";
+      $("settingsModal").classList.remove("show");
+      fetchNews(activeQuery);
+    });
+
+    $("refreshBtn").addEventListener("click", () => fetchNews(activeQuery));
+    $("latestBtn").addEventListener("click", () => fetchNews(activeQuery));
+
+    $("searchBtn").addEventListener("click", () => {
+      const q = $("searchInput").value.trim();
+      if (q) fetchNews(q);
+    });
+
+    $("searchInput").addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        const q = event.target.value.trim();
+        if (q) fetchNews(q);
+      }
+    });
+
+    $("searchInput").addEventListener("input", event => {
+      clearTimeout(searchTimer);
+      const q = event.target.value.trim();
+      if (q.length < 3) return;
+
+      searchTimer = setTimeout(() => {
+        fetchNews(q);
+      }, 700);
+    });
+
+    document.querySelectorAll(".filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        $("searchInput").value = "";
+        fetchNews(button.dataset.query);
+      });
+    });
+
+    // Close modals by clicking outside the modal.
+    document.querySelectorAll(".modal-backdrop").forEach(backdrop => {
+      backdrop.addEventListener("click", event => {
+        if (event.target === backdrop) backdrop.classList.remove("show");
+      });
+    });
+
+    // Initial load. Without an API key this intentionally uses demo data.
+    fetchNews(CONFIG.DEFAULT_QUERY);
+  </script>
 </body>
 </html>
