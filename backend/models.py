@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Literal, Optional
 from pydantic import BaseModel, Field
 
 
@@ -32,6 +32,7 @@ class KeyTerm(BaseModel):
 
 
 class SummaryResponse(BaseModel):
+    mode: Literal["live", "demo"] = "live"
     summary: str
     what_happened: str
     why_it_matters: str

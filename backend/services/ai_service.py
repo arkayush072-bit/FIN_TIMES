@@ -2,8 +2,8 @@ import json
 import re
 from typing import Dict, Any
 from groq import AsyncGroq
-from config import get_settings
-from models import Article, SummaryResponse, KeyTerm
+from backend.config import get_settings
+from backend.models import Article, SummaryResponse, KeyTerm
 
 settings = get_settings()
 
@@ -42,6 +42,7 @@ def _demo_summary(article: Article) -> SummaryResponse:
     """Used when GROQ_API_KEY is missing or AI is unavailable."""
     text = article.description or article.content or ""
     return SummaryResponse(
+        mode="demo",
         summary=text[:360] if text else "No summary available.",
         what_happened="This demo article discusses a financial or economic development and the factors readers should watch.",
         why_it_matters="Financial news can affect business expectations, borrowing costs, consumer activity and market sentiment.",
@@ -95,20 +96,20 @@ async def summarize_article(article: Article) -> SummaryResponse:
         [x for x in [article.title, article.description, article.content] if x]
     )[:6500]
 
-    client = AsyncGroq(api_key=settings.GROQ_API_KEY)
-
     try:
-        completion = await client.chat.completions.create(
-            model=settings.GROQ_MODEL,
-            temperature=0.2,
-            max_tokens=900,
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": article_text},
-            ],
-        )
+        async with AsyncGroq(api_key=settings.GROQ_API_KEY) as client:
+            completion = await client.chat.completions.create(
+                model=settings.GROQ_MODEL,
+                temperature=0.2,
+                max_tokens=900,
+                response_format={"type": "json_object"},
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": article_text},
+                ],
+            )
     except Exception as e:
-        raise RuntimeError(f"Groq API error: {e}") from e
+        raise RuntimeError("Groq request failed. Check the server connection and provider quota.") from e
 
     content = completion.choices[0].message.content if completion.choices else ""
     data = _extract_json(content)
