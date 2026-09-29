@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FinNews AI — Financial news, simplified.</title>
+<meta name="description" content="AI-powered summaries of complex financial news in simple language." />
+<link rel="stylesheet" href="/static/style.css?v=1" />
+</head>
+<body>
+
+  <div id="demo-banner" class="demo-banner" hidden>
+    Demo Mode — showing sample data. Add API keys to <code>.env</code> to fetch live news.
+  </div>
+
+  <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <header class="masthead">
+    <div class="masthead-rule"></div>
+    <div class="masthead-inner">
+      <p class="masthead-date" id="masthead-date"></p>
+      <h1 class="masthead-wordmark">FinNews AI</h1>
+      <p class="masthead-tagline">Financial news, simplified.</p>
+    </div>
+    <div class="masthead-rule"></div>
+  </header>
+
+  <nav class="nav-bar" aria-label="Sections">
+    <ul class="nav-links">
+      <li><a href="#" class="nav-link active" data-category="business">Home</a></li>
+      <li><a href="#" class="nav-link" data-category="markets">Markets</a></li>
+      <li><a href="#" class="nav-link" data-category="business">Business</a></li>
+      <li><a href="#" class="nav-link" data-category="economy">Economy</a></li>
+      <li><a href="#" class="nav-link" data-category="technology">Technology</a></li>
+      <li><a href="#" class="nav-link" data-category="india">India</a></li>
+      <li><a href="#" class="nav-link" data-category="global">Global</a></li>
+    </ul>
+    <form class="search-form" id="search-form" role="search">
+      <label for="search-input" class="sr-only">Search financial news</label>
+      <input type="search" id="search-input" placeholder="Search news&hellip;" autocomplete="off" />
+    </form>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h2 class="hero-headline">Understand Financial News in Minutes</h2>
+      <p class="hero-sub">AI-powered summaries of complex financial news in simple language.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="fetch-news-btn">Fetch Latest News</button>
+        <button class="btn btn-secondary" id="refresh-btn">Refresh</button>
+      </div>
+    </section>
+
+    <div class="section-rule"></div>
+
+    <nav class="category-filter" aria-label="Filter by category">
+      <button class="filter-pill active" data-category="all">All</button>
+      <button class="filter-pill" data-category="markets">Markets</button>
+      <button class="filter-pill" data-category="business">Business</button>
+      <button class="filter-pill" data-category="economy">Economy</button>
+      <button class="filter-pill" data-category="technology">Technology</button>
+      <button class="filter-pill" data-category="india">India</button>
+      <button class="filter-pill" data-category="global">Global</button>
+    </nav>
+
+    <section class="news-section" aria-live="polite">
+      <div id="skeleton-grid" class="news-grid" hidden>
+        <!-- skeleton cards injected by JS -->
+      </div>
+
+      <div id="news-grid" class="news-grid"></div>
+
+      <p id="empty-state" class="state-message" hidden>No relevant financial news found.</p>
+      <p id="error-state" class="state-message" hidden>Unable to fetch the latest news. Please try again.</p>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close summary">&times;</button>
+
+      <div class="modal-body">
+        <h2 class="modal-title" id="modal-title"></h2>
+        <p class="modal-meta" id="modal-meta"></p>
+
+        <div id="modal-loading" class="modal-loading" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <p>Analyzing article&hellip; Please wait.</p>
+        </div>
+
+        <div id="modal-content" class="modal-content" hidden>
+          <section class="summary-section">
+            <h3>AI Summary</h3>
+            <p id="summary-summary"></p>
+          </section>
+
+          <section class="summary-section">
+            <h3>What Happened?</h3>
+            <p id="summary-what-happened"></p>
+          </section>
+
+          <section class="summary-section">
+            <h3>Why It Matters</h3>
+            <p id="summary-why-matters"></p>
+          </section>
+
+          <section class="summary-section">
+            <h3>Key Financial Terms</h3>
+            <dl id="summary-key-terms" class="term-list"></dl>
+          </section>
+
+          <section class="summary-section">
+            <h3>Key Takeaways</h3>
+            <ul id="summary-takeaways" class="takeaway-list"></ul>
+          </section>
+
+          <section class="summary-section">
+            <h3>Beginner Explanation</h3>
+            <p id="summary-beginner"></p>
+          </section>
+        </div>
+
+        <div id="modal-error" class="state-message" hidden></div>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" id="modal-read-original" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Read Original Article</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p class="disclaimer">
+      FinNews AI provides AI-generated summaries for educational and informational purposes only.
+      It is not financial, investment, or trading advice. Always verify important information using the original source.
+    </p>
+  </footer>
+
+  <script src="/static/script.js?v=1"></script>
+</body>
+</html>
