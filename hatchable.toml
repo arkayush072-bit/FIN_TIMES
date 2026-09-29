@@ -1,3 +1,15 @@
-name = "Threshold"
-description = "A warm editorial one-page website for a residential real estate agent: featured listings with a sold strip, agent stats, buyer and seller journeys, and neighborhood field notes."
-tagline = "The agent site that sells the neighborhood."
+name = "FinNews AI"
+description = "A financial news dashboard with live NewsAPI articles and Groq AI summaries."
+tagline = "Understand financial news in minutes."
+
+# Connect these APIs on the existing project's Setup page. Credentials are
+# stored and attached by Hatchable's gateway, never sent to the browser.
+[[api]]
+name = "newsapi"
+base_url = "https://newsapi.org/v2"
+auth = "api_key"
+
+[[api]]
+name = "groq"
+base_url = "https://api.groq.com/openai/v1"
+auth = "api_key"

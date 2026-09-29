@@ -4,501 +4,114 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="FinNews AI - AI-powered financial news simplification dashboard" />
-  <title>FinNews AI</title>
+  <title>FinNews AI — The financial news briefing</title>
+  <meta name="application-version" content="classic-2" />
 
-  <style>
-    :root {
-      --bg: #070b11;
-      --panel: #111821;
-      --panel-2: #17212c;
-      --border: #263341;
-      --text: #f4f7fb;
-      --muted: #91a0b2;
-      --accent: #3b82f6;
-      --accent-2: #60a5fa;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --shadow: 0 18px 50px rgba(0,0,0,.28);
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at 20% -10%, rgba(59,130,246,.16), transparent 30%),
-        var(--bg);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.55;
-    }
-
-    button, input, select { font: inherit; }
-
-    button { cursor: pointer; border: 0; }
-
-    .container {
-      width: min(1180px, calc(100% - 32px));
-      margin: auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(7,11,17,.82);
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-
-    .nav {
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -.4px;
-    }
-
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #2563eb, #60a5fa);
-      color: white;
-      box-shadow: 0 8px 28px rgba(37,99,235,.32);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 9px;
-    }
-
-    .icon-btn, .secondary-btn {
-      color: var(--text);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 9px 13px;
-    }
-
-    .icon-btn:hover, .secondary-btn:hover {
-      border-color: #3a4a5b;
-      background: var(--panel-2);
-    }
-
-    main { padding: 42px 0 70px; }
-
-    .hero {
-      padding: 42px 0 26px;
-      display: grid;
-      grid-template-columns: 1.35fr .65fr;
-      gap: 30px;
-      align-items: end;
-    }
-
-    .eyebrow {
-      color: var(--accent-2);
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-    }
-
-    h1 {
-      font-size: clamp(38px, 6vw, 68px);
-      line-height: .98;
-      letter-spacing: -3px;
-      margin: 12px 0 18px;
-      max-width: 760px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      max-width: 680px;
-      font-size: 17px;
-      margin: 0;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .stat {
-      padding: 18px;
-      border: 1px solid var(--border);
-      background: rgba(17,24,33,.8);
-      border-radius: 16px;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 25px;
-      margin-bottom: 2px;
-    }
-
-    .stat span { color: var(--muted); font-size: 13px; }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin: 12px 0 20px;
-      flex-wrap: wrap;
-    }
-
-    .search {
-      flex: 1 1 300px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 14px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 12px;
-    }
-
-    .search input {
-      width: 100%;
-      padding: 13px 4px;
-      background: transparent;
-      color: var(--text);
-      border: 0;
-      outline: 0;
-    }
-
-    .primary-btn {
-      background: var(--accent);
-      color: white;
-      padding: 12px 17px;
-      border-radius: 12px;
-      font-weight: 750;
-      transition: transform .15s, background .15s;
-    }
-
-    .primary-btn:hover { background: #2563eb; transform: translateY(-1px); }
-    .primary-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
-
-    .filters {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 5px;
-      scrollbar-width: thin;
-    }
-
-    .filter {
-      white-space: nowrap;
-      color: var(--muted);
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 9px 13px;
-      border-radius: 999px;
-    }
-
-    .filter.active {
-      color: white;
-      background: rgba(59,130,246,.17);
-      border-color: rgba(59,130,246,.6);
-    }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 30px 0 15px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-      font-size: 25px;
-      letter-spacing: -.7px;
-    }
-
-    .status { color: var(--muted); font-size: 13px; }
-    .status.ok { color: var(--success); }
-    .status.error { color: #fca5a5; }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 17px;
-    }
-
-    .card {
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-      background: linear-gradient(180deg, rgba(23,33,44,.94), rgba(17,24,33,.94));
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .card-image {
-      width: 100%;
-      aspect-ratio: 16/9;
-      object-fit: cover;
-      background: #0e141c;
-    }
-
-    .card-body { padding: 17px; display: flex; flex-direction: column; flex: 1; }
-
-    .meta {
-      display: flex; gap: 9px; align-items: center;
-      color: var(--muted); font-size: 12px; margin-bottom: 9px;
-    }
-
-    .source { color: var(--accent-2); font-weight: 700; }
-
-    .card h3 { font-size: 18px; line-height: 1.25; margin: 0 0 9px; letter-spacing: -.35px; }
-    .card p { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
-
-    .card-actions {
-      margin-top: auto;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .ai-btn {
-      flex: 1;
-      min-width: 130px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: white;
-      background: #1d4ed8;
-      font-weight: 700;
-    }
-
-    .article-btn {
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: var(--text);
-      background: #0d141c;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .empty {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 60px 20px;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      color: var(--muted);
-    }
-
-    .skeleton {
-      height: 350px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      background: linear-gradient(90deg, #101720, #1a2530, #101720);
-      background-size: 220% 100%;
-      animation: shimmer 1.3s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -20% 0; }
-    }
-
-    footer {
-      border-top: 1px solid rgba(255,255,255,.06);
-      padding: 24px 0 40px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .modal-backdrop {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(7px);
-      z-index: 50;
-      display: none;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .modal-backdrop.show { display: grid; place-items: center; }
-
-    .modal {
-      width: min(760px, 100%);
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #101720;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 0 30px 100px rgba(0,0,0,.55);
-      padding: 25px;
-    }
-
-    .modal-head {
-      display: flex; justify-content: space-between; gap: 15px; align-items: start;
-    }
-
-    .modal-head h2 { margin: 0; line-height: 1.2; }
-
-    .close {
-      width: 38px; height: 38px; border-radius: 10px;
-      background: var(--panel-2); color: white; font-size: 20px;
-    }
-
-    .ai-content { margin-top: 20px; }
-
-    .ai-block {
-      padding: 15px;
-      background: #0c131b;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      margin: 11px 0;
-    }
-
-    .ai-block h4 { margin: 0 0 7px; color: var(--accent-2); font-size: 14px; }
-    .ai-block p, .ai-block li { color: #d7e0ea; font-size: 14px; }
-
-    .term {
-      display: inline-block;
-      padding: 7px 10px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 9px;
-      margin: 4px;
-      color: #dbeafe;
-      font-size: 13px;
-    }
-
-    .notice {
-      padding: 12px;
-      border-radius: 11px;
-      background: rgba(245,158,11,.1);
-      border: 1px solid rgba(245,158,11,.25);
-      color: #fcd34d;
-      font-size: 12px;
-      margin: 14px 0;
-    }
-
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .news-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-
-    @media (max-width: 620px) {
-      .container { width: min(100% - 22px, 1180px); }
-      main { padding-top: 20px; }
-      .nav { min-height: 62px; }
-      .brand { font-size: 17px; }
-      .hero { padding-top: 30px; }
-      h1 { letter-spacing: -2px; }
-      .news-grid { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .toolbar { align-items: stretch; }
-      .search { flex-basis: 100%; }
-      .primary-btn { flex: 1; }
-    }
-  </style>
+  <link rel="stylesheet" href="/static/style.css?v=classic-2" />
 </head>
 
 <body>
+  <a class="skip-link" href="#mainContent">Skip to news</a>
+  <div class="edition-bar">
+    <div class="container edition-inner">
+      <time id="editionDate"></time>
+      <span>A little context. A clearer perspective.</span>
+    </div>
+  </div>
   <header>
     <div class="container nav">
-      <div class="brand">
-        <div class="brand-mark">F</div>
-        <span>FinNews AI</span>
+      <div class="masthead-note">Business. Markets. Perspective.</div>
+      <div>
+        <a class="brand" href="/" aria-label="FinNews AI home">FinNews <span class="brand-ai">AI</span></a>
+        <div class="brand-caption">The financial news briefing</div>
       </div>
       <div class="nav-actions">
-        <!-- API Settings button removed — keys are on the server -->
-        <button class="secondary-btn" id="refreshBtn">↻ Refresh</button>
+        <span class="nav-note">Read the news. Understand the story.</span>
+        <button class="secondary-btn" id="refreshBtn">Refresh</button>
       </div>
     </div>
+      <nav class="container filters" id="filters" aria-label="News categories">
+        <button class="filter active" data-query="finance">Home</button>
+        <button class="filter" data-query="stock market">Markets</button>
+        <button class="filter" data-query="business companies">Business</button>
+        <button class="filter" data-query="economy inflation">Economy</button>
+        <button class="filter" data-query="technology">Technology</button>
+        <button class="filter" data-query="India finance">India</button>
+        <button class="filter" data-query="global economy">Global</button>
+      </nav>
   </header>
 
-  <main class="container">
+  <main class="container" id="mainContent">
     <section class="hero">
       <div>
-        <div class="eyebrow">AI Financial News Simplifier</div>
-        <h1>Understand financial news in minutes.</h1>
+        <div class="eyebrow">Perspective beyond the headlines</div>
+        <h1>The world moves fast.<br><em>Make sense of it.</em></h1>
         <p>
-          Fetch current business and market news, then simplify complex articles
-          into clear, beginner-friendly explanations using AI.
+          Your daily lens on business, markets, and the economy. Explore the
+          headlines, unpack the language, and find the story behind the numbers.
         </p>
       </div>
 
-      <div class="stats">
+      <aside class="reading-desk" aria-label="Your reading desk">
+        <div class="desk-title">Your reading desk</div>
+        <div class="stats">
         <div class="stat">
           <strong id="articleCount">0</strong>
           <span>Articles loaded</span>
         </div>
         <div class="stat">
           <strong id="modeLabel">…</strong>
-          <span>Data mode</span>
+          <span>News source mode</span>
         </div>
-      </div>
+        </div>
+        <p>Big ideas, explained in plain language.</p>
+      </aside>
     </section>
 
     <section>
       <div class="toolbar">
         <div class="search">
-          🔎
-          <input id="searchInput" type="search"
-                 placeholder="Search finance, stocks, inflation, companies..." />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+          <input id="searchInput" type="search" aria-label="Search financial news" maxlength="200"
+                 placeholder="Search a company, topic, or headline…" />
         </div>
         <button class="primary-btn" id="searchBtn">Search News</button>
         <button class="secondary-btn" id="latestBtn">Latest</button>
       </div>
 
-      <div class="filters" id="filters">
-        <button class="filter active" data-query="finance">Finance</button>
-        <button class="filter" data-query="stock market">Markets</button>
-        <button class="filter" data-query="economy inflation">Economy</button>
-        <button class="filter" data-query="business companies">Business</button>
-        <button class="filter" data-query="technology">Technology</button>
-        <button class="filter" data-query="India finance">India</button>
-        <button class="filter" data-query="global economy">Global</button>
-      </div>
+
     </section>
 
     <div class="section-head">
-      <h2>Latest Financial News</h2>
-      <div class="status" id="status">Ready</div>
+      <h2>The latest briefing</h2>
+      <div class="edition-actions">
+        <div class="status" id="status" role="status" aria-live="polite">Ready</div>
+        <button class="secondary-btn" id="batchBtn" disabled>Summarize briefing</button>
+      </div>
     </div>
 
-    <section class="news-grid" id="newsGrid"></section>
+    <div class="notice" id="demoBanner" hidden>Demo edition — these fictional sample articles illustrate the reading experience. Searches and sections show the same examples.</div>
+    <section aria-label="News articles" class="news-grid" id="newsGrid"></section>
   </main>
 
   <footer>
-    <div class="container">
-      FinNews AI provides AI-generated summaries for educational and informational
+    <div class="container footer-inner">
+      <div class="footer-brand">FinNews <span>AI</span></div>
+      <div class="footer-copy">FinNews AI provides AI-generated summaries for educational and informational
       purposes only. It is not financial, investment, or trading advice.
-      Always verify important information using the original source.
+      Always verify important information using the original source.</div>
     </div>
   </footer>
 
   <!-- AI SUMMARY MODAL -->
   <div class="modal-backdrop" id="summaryModal">
-    <div class="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="summaryTitle">
       <div class="modal-head">
         <div>
           <div class="eyebrow">AI Simplification</div>
           <h2 id="summaryTitle">Analyzing article...</h2>
         </div>
-        <button class="close" id="closeSummary">×</button>
+        <button class="close" id="closeSummary" aria-label="Close summary">×</button>
       </div>
       <div class="ai-content" id="aiContent">
         <div class="empty">Analyzing article with AI...</div>
@@ -508,352 +121,6 @@
 
   <!-- API SETTINGS MODAL REMOVED -->
 
-  <script>
-    /* ============================================================
-       FINNEWS AI - FRONTEND (talks to FastAPI backend)
-       Backend endpoints:
-         GET  /api/news?q=finance&page_size=12
-         POST /api/summarize  { title, description, content, url }
-         GET  /api/health
-       ============================================================ */
-
-    // 👇 Change this if your backend runs elsewhere
-    const API_BASE = "http://localhost:8000";
-
-    let articles = [];
-    let activeQuery = "finance";
-    let searchTimer = null;
-
-    const $ = (id) => document.getElementById(id);
-
-    function setStatus(message, type = "") {
-      $("status").textContent = message;
-      $("status").className = "status " + type;
-    }
-
-    function escapeHtml(value = "") {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function truncate(text, max = 700) {
-      if (!text) return "";
-      return text.length > max ? text.slice(0, max) + "..." : text;
-    }
-
-    function formatDate(dateString) {
-      if (!dateString) return "Unknown date";
-      const date = new Date(dateString);
-      if (Number.isNaN(date.getTime())) return "Unknown date";
-      return date.toLocaleString([], {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function imageForArticle(article) {
-      if (article.urlToImage) return article.urlToImage;
-      const title = encodeURIComponent((article.title || "Financial News").slice(0, 45));
-      return `https://placehold.co/800x450/111821/93c5fd?text=${title}`;
-    }
-
-    function renderSkeletons() {
-      $("newsGrid").innerHTML = Array.from({ length: 6 })
-        .map(() => `<div class="skeleton"></div>`)
-        .join("");
-    }
-
-    function renderArticles(list = articles) {
-      $("articleCount").textContent = list.length;
-
-      if (!list.length) {
-        $("newsGrid").innerHTML = `
-          <div class="empty">
-            <h3>No financial news found</h3>
-            <p>Try another search term or category.</p>
-          </div>`;
-        return;
-      }
-
-      $("newsGrid").innerHTML = list.map((article, index) => `
-        <article class="card">
-          <img
-            class="card-image"
-            src="${escapeHtml(imageForArticle(article))}"
-            alt=""
-            loading="lazy"
-            onerror="this.src='https://placehold.co/800x450/111821/93c5fd?text=FinNews+AI'"
-          />
-
-          <div class="card-body">
-            <div class="meta">
-              <span class="source">${escapeHtml(article.source?.name || "Unknown source")}</span>
-              <span>•</span>
-              <span>${escapeHtml(formatDate(article.publishedAt))}</span>
-            </div>
-
-            <h3>${escapeHtml(article.title || "Untitled article")}</h3>
-
-            <p>${escapeHtml(truncate(article.description || article.content || "No description available.", 180))}</p>
-
-            <div class="card-actions">
-              <button class="ai-btn" data-ai-index="${index}">✨ Simplify with AI</button>
-              <a class="article-btn"
-                 href="${escapeHtml(article.url || "#")}"
-                 target="_blank"
-                 rel="noopener noreferrer">Read Original</a>
-            </div>
-          </div>
-        </article>
-      `).join("");
-
-      document.querySelectorAll("[data-ai-index]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const index = Number(btn.dataset.aiIndex);
-          openSummary(articles[index]);
-        });
-      });
-    }
-
-    // ---------- Frontend summary cache (per browser) ----------
-    function cacheKey(article) {
-      const raw = article.url || article.title || "";
-      return "finnews_summary_" + btoa(unescape(encodeURIComponent(raw))).slice(0, 100);
-    }
-
-    function getCachedSummary(article) {
-      try {
-        const raw = localStorage.getItem(cacheKey(article));
-        if (!raw) return null;
-        const item = JSON.parse(raw);
-        // 10 min TTL
-        if (Date.now() - item.time > 10 * 60 * 1000) {
-          localStorage.removeItem(cacheKey(article));
-          return null;
-        }
-        return item.data;
-      } catch {
-        return null;
-      }
-    }
-
-    function setCachedSummary(article, data) {
-      try {
-        localStorage.setItem(cacheKey(article), JSON.stringify({
-          time: Date.now(),
-          data
-        }));
-      } catch { /* quota / private mode */ }
-    }
-
-    // ---------- Backend calls ----------
-    async function checkBackendHealth() {
-      try {
-        const res = await fetch(`${API_BASE}/api/health`);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        // Mode is also updated inside fetchNews(), but this gives early feedback
-        if (!data.news_api) {
-          $("modeLabel").textContent = "Demo";
-        }
-      } catch {
-        $("modeLabel").textContent = "Offline";
-        setStatus("Backend unreachable — start the FastAPI server", "error");
-      }
-    }
-
-    async function fetchNews(query = activeQuery) {
-      activeQuery = query;
-      renderSkeletons();
-      setStatus("Fetching news...");
-
-      try {
-        const params = new URLSearchParams({
-          q: query,
-          page_size: "12",
-        });
-
-        const res = await fetch(`${API_BASE}/api/news?${params.toString()}`);
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.detail || `Server error ${res.status}`);
-        }
-
-        const data = await res.json();
-        articles = data.articles || [];
-
-        $("modeLabel").textContent = data.mode === "live" ? "Live" : "Demo";
-
-        renderArticles();
-        setStatus(
-          data.mode === "live"
-            ? `${articles.length} articles loaded`
-            : "Demo mode — add NewsAPI key on server",
-          data.mode === "live" ? "ok" : "error"
-        );
-      } catch (error) {
-        console.error(error);
-        articles = [];
-        renderArticles();
-        setStatus("Could not fetch news", "error");
-        $("newsGrid").innerHTML = `
-          <div class="empty">
-            <h3>Backend connection failed</h3>
-            <p>${escapeHtml(error.message || "Is the FastAPI server running?")}</p>
-            <button class="primary-btn" style="margin-top:12px" id="retryBtn">Try Again</button>
-          </div>`;
-        $("retryBtn").addEventListener("click", () => fetchNews(activeQuery));
-      }
-    }
-
-    async function summarizeWithBackend(article) {
-      const res = await fetch(`${API_BASE}/api/summarize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: article.title || "",
-          description: article.description || "",
-          content: article.content || "",
-          url: article.url || "",
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail || `Server error ${res.status}`);
-      }
-      return await res.json();
-    }
-
-    async function openSummary(article) {
-      $("summaryModal").classList.add("show");
-      $("summaryTitle").textContent = article.title || "Financial News";
-      $("aiContent").innerHTML = `<div class="empty">✨ Analyzing article with AI...</div>`;
-
-      const cached = getCachedSummary(article);
-
-      try {
-        const summary = cached || await summarizeWithBackend(article);
-        if (!cached) setCachedSummary(article, summary);
-        renderSummary(summary);
-      } catch (error) {
-        console.error(error);
-        $("aiContent").innerHTML = `
-          <div class="ai-block">
-            <h4>AI summarization unavailable</h4>
-            <p>${escapeHtml(error.message || "Please try again later.")}</p>
-          </div>
-          <div class="notice">
-            You can still read the original article using the button on the news card.
-          </div>`;
-      }
-    }
-
-    function renderSummary(data) {
-      const terms = Array.isArray(data.key_terms)
-        ? data.key_terms.map(item => `
-            <span class="term">
-              <strong>${escapeHtml(item.term || "")}</strong> — ${escapeHtml(item.meaning || "")}
-            </span>
-          `).join("")
-        : "";
-
-      const takeaways = Array.isArray(data.key_takeaways)
-        ? `<ul>${data.key_takeaways.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>`
-        : "";
-
-      $("aiContent").innerHTML = `
-        <div class="ai-block">
-          <h4>Short Summary</h4>
-          <p>${escapeHtml(data.summary || "No summary available.")}</p>
-        </div>
-
-        <div class="ai-block">
-          <h4>What Happened?</h4>
-          <p>${escapeHtml(data.what_happened || "Not available.")}</p>
-        </div>
-
-        <div class="ai-block">
-          <h4>Why It Matters</h4>
-          <p>${escapeHtml(data.why_it_matters || "Not available.")}</p>
-        </div>
-
-        <div class="ai-block">
-          <h4>Key Financial Terms</h4>
-          ${terms || "<p>No specific terms identified.</p>"}
-        </div>
-
-        <div class="ai-block">
-          <h4>Key Takeaways</h4>
-          ${takeaways || "<p>No takeaways available.</p>"}
-        </div>
-
-        <div class="ai-block">
-          <h4>Beginner Explanation</h4>
-          <p>${escapeHtml(data.beginner_explanation || "Not available.")}</p>
-        </div>
-      `;
-    }
-
-    // ---------- Event wiring ----------
-    $("closeSummary").addEventListener("click", () => {
-      $("summaryModal").classList.remove("show");
-    });
-
-    $("refreshBtn").addEventListener("click", () => fetchNews(activeQuery));
-    $("latestBtn").addEventListener("click", () => fetchNews(activeQuery));
-
-    $("searchBtn").addEventListener("click", () => {
-      const q = $("searchInput").value.trim();
-      if (q) fetchNews(q);
-    });
-
-    $("searchInput").addEventListener("keydown", event => {
-      if (event.key === "Enter") {
-        const q = event.target.value.trim();
-        if (q) fetchNews(q);
-      }
-    });
-
-    $("searchInput").addEventListener("input", event => {
-      clearTimeout(searchTimer);
-      const q = event.target.value.trim();
-      if (q.length < 3) return;
-      searchTimer = setTimeout(() => fetchNews(q), 700);
-    });
-
-    document.querySelectorAll(".filter").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
-        button.classList.add("active");
-        $("searchInput").value = "";
-        fetchNews(button.dataset.query);
-      });
-    });
-
-    // Close summary modal by backdrop click or Escape
-    window.addEventListener("click", (event) => {
-      if (event.target === $("summaryModal")) {
-        $("summaryModal").classList.remove("show");
-      }
-    });
-
-    window.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        $("summaryModal").classList.remove("show");
-      }
-    });
-
-    // ---------- Initial load ----------
-    checkBackendHealth();
-    fetchNews();
-  </script>
+  <script src="/static/app.js?v=classic-2" defer></script>
 </body>
 </html>

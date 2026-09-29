@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from models import ArticleRequest, SummaryResponse, Article
-from services.ai_service import summarize_article
+from backend.models import ArticleRequest, SummaryResponse, Article
+from backend.services.ai_service import summarize_article
 
 router = APIRouter(prefix="/api", tags=["ai"])
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
-from models import NewsResponse
-from services.news_service import fetch_news
+from backend.models import NewsResponse
+from backend.services.news_service import fetch_news
 
 router = APIRouter(prefix="/api", tags=["news"])
 
